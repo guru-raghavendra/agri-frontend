@@ -1,0 +1,22 @@
+.login-container{
+	padding: 20% 0%;
+	.login-btn{
+		display: flex;
+		justify-content: center;
+		button{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background: none;
+			border: 1px solid gray;
+			border-radius: 10px;
+			img{
+				height: 40px;
+			}
+			span{
+				font-size: 15px;
+				font-weight: 500;
+			}
+		}
+	}
+}
