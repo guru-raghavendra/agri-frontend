@@ -1,46 +1,36 @@
-import { Component } from '@angular/core';
-import { LoginService } from '../../services/login.service';
-import { SocialAuthService } from '@abacritt/angularx-social-login';
+declare const google: any;
+
+import { AfterViewInit, Component } from '@angular/core';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements AfterViewInit {
 
-  constructor(private service: LoginService, private authService: SocialAuthService){}
 
-  signIn(googleUser: any): void {
-    console.log("in signin")
-    this.service.signInWithGoogle().subscribe(
-      token => {
-        this.service.sendToBackend(token).subscribe(
-          response => {
-            console.log(response)
-          },
-          error => {
-            console.log(error)
-            // Handle errors from your backend
-          }
-        );
-      },
-      error => {
-        // Handle sign-in error
-      }
+  ngAfterViewInit() {
+    google.accounts.id.initialize({
+      client_id: '44319179088-ih4r7b6jo25m4epblohftuu019gfur6g.apps.googleusercontent.com',
+      callback: (response: any) => this.handleCredentialResponse(response)
+    });
+
+    google.accounts.id.renderButton(
+      document.getElementById('googleSignInButton'), 
+      { theme: 'outline', size: 'large' } // Customize as needed
     );
   }
 
-  title = 'angular-google';
-  user:any;
-  loggedIn:any;
-
-  ngOnInit() {
-    this.authService.authState.subscribe((user) => {
-      this.user = user;
-      this.loggedIn = (user != null);
-      console.log(this.user)
-    });
+  handleCredentialResponse(response: any) {
+    console.log(response)
+    console.log('Encoded JWT ID token: ' + response.credential);
+    // Send this token to your backend for validation and to create a JWT
+    this.sendTokenToBackend(response.credential);
   }
 
+  sendTokenToBackend(token: string) {
+    // Implement the logic to send the token to your backend
+    // This usually involves an HTTP POST request
+  }
 }
