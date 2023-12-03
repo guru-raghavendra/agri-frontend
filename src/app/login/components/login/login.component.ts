@@ -9,8 +9,16 @@ import { AfterViewInit, Component } from '@angular/core';
 })
 export class LoginComponent implements AfterViewInit {
 
-
   ngAfterViewInit() {
+    if (typeof google !== 'undefined') {
+      this.initializeGoogleSignIn();
+    } else {
+      window.addEventListener('google-signin-loaded', this.initializeGoogleSignIn.bind(this));
+    }
+  }
+
+  initializeGoogleSignIn() {
+    console.log("inti")
     google.accounts.id.initialize({
       client_id: '44319179088-ih4r7b6jo25m4epblohftuu019gfur6g.apps.googleusercontent.com',
       callback: (response: any) => this.handleCredentialResponse(response)
@@ -18,8 +26,15 @@ export class LoginComponent implements AfterViewInit {
 
     google.accounts.id.renderButton(
       document.getElementById('googleSignInButton'), 
-      { theme: 'outline', size: 'large' } // Customize as needed
+      { theme: 'outline', 
+        size: 'large' ,
+        text: 'continue_with',
+        shape: 'pill',} // Customize as needed
     );
+  }
+
+  signInWithGoogle() {
+    google.accounts.id.prompt(); // Triggers the Google Sign-In flow
   }
 
   handleCredentialResponse(response: any) {
