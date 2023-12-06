@@ -1,5 +1,5 @@
 # AgriFrontend
-
+node version v18.13.0 <br>
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.10.
 
 ## Development server
